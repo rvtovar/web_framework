@@ -1,4 +1,6 @@
+import axios, { AxiosResponse } from 'axios';
 interface UserProps {
+  id?: number;
   name?: string;
   age?: number;
 }
@@ -36,5 +38,17 @@ export class User {
     if (!handlers || handlers.length == 0) return;
 
     handlers.forEach((callback) => callback());
+  }
+
+  async fetch(): Promise<void> {
+    try {
+      const res: AxiosResponse = await axios.get(
+        `http://localhost:3000/users/${this.get('id')}`
+      );
+
+      this.set(res.data);
+    } catch (e) {
+      throw new Error('User not Found');
+    }
   }
 }
