@@ -4543,24 +4543,8 @@ module.exports.default = axios;
 
 },{"./utils":"node_modules/axios/lib/utils.js","./helpers/bind":"node_modules/axios/lib/helpers/bind.js","./core/Axios":"node_modules/axios/lib/core/Axios.js","./core/mergeConfig":"node_modules/axios/lib/core/mergeConfig.js","./defaults":"node_modules/axios/lib/defaults/index.js","./cancel/CanceledError":"node_modules/axios/lib/cancel/CanceledError.js","./cancel/CancelToken":"node_modules/axios/lib/cancel/CancelToken.js","./cancel/isCancel":"node_modules/axios/lib/cancel/isCancel.js","./env/data":"node_modules/axios/lib/env/data.js","./helpers/toFormData":"node_modules/axios/lib/helpers/toFormData.js","../lib/core/AxiosError":"node_modules/axios/lib/core/AxiosError.js","./helpers/spread":"node_modules/axios/lib/helpers/spread.js","./helpers/isAxiosError":"node_modules/axios/lib/helpers/isAxiosError.js"}],"node_modules/axios/index.js":[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/models/User.ts":[function(require,module,exports) {
+},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/models/Sync.ts":[function(require,module,exports) {
 "use strict";
-
-var __assign = this && this.__assign || function () {
-  __assign = Object.assign || function (t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-      s = arguments[i];
-
-      for (var p in s) {
-        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-      }
-    }
-
-    return t;
-  };
-
-  return __assign.apply(this, arguments);
-};
 
 var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
   function adopt(value) {
@@ -4714,43 +4698,20 @@ var __importDefault = this && this.__importDefault || function (mod) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.User = void 0;
+exports.Sync = void 0;
 
 var axios_1 = __importDefault(require("axios"));
 
-var User =
+var Sync =
 /** @class */
 function () {
-  function User(data) {
-    this.data = data;
-    this.events = {};
+  function Sync(rootUrl) {
+    this.rootUrl = rootUrl;
   }
 
-  User.prototype.get = function (propName) {
-    return this.data[propName];
-  };
-
-  User.prototype.set = function (update) {
-    this.data = __assign(__assign({}, this.data), update);
-  };
-
-  User.prototype.on = function (eventName, callback) {
-    var handlers = this.events[eventName] || [];
-    handlers.push(callback);
-    this.events[eventName] = handlers;
-  };
-
-  User.prototype.trigger = function (eventName) {
-    var handlers = this.events[eventName];
-    if (!handlers || handlers.length == 0) return;
-    handlers.forEach(function (callback) {
-      return callback();
-    });
-  };
-
-  User.prototype.fetch = function () {
+  Sync.prototype.fetch = function (id) {
     return __awaiter(this, void 0, Promise, function () {
-      var res, e_1;
+      var e_1;
       return __generator(this, function (_a) {
         switch (_a.label) {
           case 0:
@@ -4758,14 +4719,12 @@ function () {
 
             return [4
             /*yield*/
-            , axios_1.default.get("http://localhost:3000/users/".concat(this.get('id')))];
+            , axios_1.default.get("".concat(this.rootUrl, "/").concat(id))];
 
           case 1:
-            res = _a.sent();
-            this.set(res.data);
-            return [3
-            /*break*/
-            , 3];
+            return [2
+            /*return*/
+            , _a.sent()];
 
           case 2:
             e_1 = _a.sent();
@@ -4780,11 +4739,144 @@ function () {
     });
   };
 
+  Sync.prototype.save = function (data) {
+    return __awaiter(this, void 0, Promise, function () {
+      var id, e_2;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            _a.trys.push([0, 5,, 6]);
+
+            id = data.id;
+            if (!id) return [3
+            /*break*/
+            , 2];
+            return [4
+            /*yield*/
+            , axios_1.default.put("".concat(this.rootUrl, "/").concat(id), data)];
+
+          case 1:
+            return [2
+            /*return*/
+            , _a.sent()];
+
+          case 2:
+            return [4
+            /*yield*/
+            , axios_1.default.post(this.rootUrl, data)];
+
+          case 3:
+            return [2
+            /*return*/
+            , _a.sent()];
+
+          case 4:
+            return [3
+            /*break*/
+            , 6];
+
+          case 5:
+            e_2 = _a.sent();
+            throw new Error('Connection Failed');
+
+          case 6:
+            return [2
+            /*return*/
+            ];
+        }
+      });
+    });
+  };
+
+  return Sync;
+}();
+
+exports.Sync = Sync;
+},{"axios":"node_modules/axios/index.js"}],"src/models/Eventing.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Eventing = void 0;
+
+var Eventing =
+/** @class */
+function () {
+  function Eventing() {
+    this.events = {};
+  }
+
+  Eventing.prototype.on = function (eventName, callback) {
+    var handlers = this.events[eventName] || [];
+    handlers.push(callback);
+    this.events[eventName] = handlers;
+  };
+
+  Eventing.prototype.trigger = function (eventName) {
+    var handlers = this.events[eventName];
+    if (!handlers || handlers.length == 0) return;
+    handlers.forEach(function (callback) {
+      return callback();
+    });
+  };
+
+  return Eventing;
+}();
+
+exports.Eventing = Eventing;
+},{}],"src/models/User.ts":[function(require,module,exports) {
+"use strict";
+
+var __assign = this && this.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.User = void 0;
+
+var Sync_1 = require("./Sync");
+
+var Eventing_1 = require("./Eventing");
+
+var rootUrl = 'http://localhost:3000/users';
+
+var User =
+/** @class */
+function () {
+  function User(data) {
+    this.data = data;
+    this.events = new Eventing_1.Eventing();
+    this.sync = new Sync_1.Sync(rootUrl);
+  }
+
+  User.prototype.get = function (propName) {
+    return this.data[propName];
+  };
+
+  User.prototype.set = function (update) {
+    this.data = __assign(__assign({}, this.data), update);
+  };
+
   return User;
 }();
 
 exports.User = User;
-},{"axios":"node_modules/axios/index.js"}],"src/index.ts":[function(require,module,exports) {
+},{"./Sync":"src/models/Sync.ts","./Eventing":"src/models/Eventing.ts"}],"src/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4796,8 +4888,10 @@ var User_1 = require("./models/User");
 var user = new User_1.User({
   id: 1
 });
-user.fetch();
-console.log(user);
+user.events.on('click', function () {
+  return console.log('clicked');
+});
+user.events.trigger('click');
 },{"./models/User":"src/models/User.ts"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -4826,7 +4920,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42297" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44247" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
