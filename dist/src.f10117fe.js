@@ -117,7 +117,65 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"src/views/View.ts":[function(require,module,exports) {
+})({"src/views/CollectionView.ts":[function(require,module,exports) {
+"use strict";
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CollectionView = void 0; // require Model and Model Props interface
+
+var CollectionView = /*#__PURE__*/function () {
+  function CollectionView(parent, collection) {
+    _classCallCheck(this, CollectionView);
+
+    this.parent = parent;
+    this.collection = collection;
+  }
+
+  _createClass(CollectionView, [{
+    key: "render",
+    value: function render() {
+      this.parent.innerHTML = '';
+      var templateElement = document.createElement('template');
+
+      var _iterator = _createForOfIteratorHelper(this.collection.models),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var model = _step.value;
+          var itemParent = document.createElement('div');
+          this.renderItem(model, itemParent);
+          templateElement.content.append(itemParent);
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+
+      this.parent.append(templateElement.content);
+    }
+  }]);
+
+  return CollectionView;
+}();
+
+exports.CollectionView = CollectionView;
+},{}],"src/views/View.ts":[function(require,module,exports) {
 "use strict";
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -228,97 +286,7 @@ var View = /*#__PURE__*/function () {
 }();
 
 exports.View = View;
-},{}],"src/views/UserForm.ts":[function(require,module,exports) {
-"use strict";
-
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.UserForm = void 0;
-
-var View_1 = require("./View"); // loadedin user model and properties with user
-
-
-var UserForm = /*#__PURE__*/function (_View_1$View) {
-  _inherits(UserForm, _View_1$View);
-
-  var _super = _createSuper(UserForm);
-
-  function UserForm() {
-    var _this;
-
-    _classCallCheck(this, UserForm);
-
-    _this = _super.apply(this, arguments);
-
-    _this.onSaveClick = function () {
-      console.log('hello');
-
-      _this.model.save();
-    };
-
-    _this.onSetNameClick = function () {
-      var input = _this.parent.querySelector('input');
-
-      if (input) {
-        var name = input.value;
-
-        _this.model.set({
-          name: name
-        });
-      }
-    };
-
-    _this.onSetAgeClick = function () {
-      _this.model.setRandomAge();
-    };
-
-    return _this;
-  }
-
-  _createClass(UserForm, [{
-    key: "eventsMap",
-    value: function eventsMap() {
-      return {
-        'click:.set-age': this.onSetAgeClick,
-        'click:.set-name': this.onSetNameClick,
-        'click:.save-model': this.onSaveClick
-      };
-    }
-  }, {
-    key: "template",
-    value: function template() {
-      return "\n        <div>\n            <input placeholder=\"".concat(this.model.get('name'), "\" type='text'>\n            <button class=\"set-name\">Change Name</button>\n            <button class=\"set-age\">Set Random Age</button>\n            <button class=\"save-model\">Save User</button>\n        </div>\n    ");
-    }
-  }]);
-
-  return UserForm;
-}(View_1.View);
-
-exports.UserForm = UserForm;
-},{"./View":"src/views/View.ts"}],"src/views/UserShow.ts":[function(require,module,exports) {
+},{}],"src/views/UserShow.ts":[function(require,module,exports) {
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -372,7 +340,7 @@ var UserShow = /*#__PURE__*/function (_View_1$View) {
 }(View_1.View);
 
 exports.UserShow = UserShow;
-},{"./View":"src/views/View.ts"}],"src/views/UserEdit.ts":[function(require,module,exports) {
+},{"./View":"src/views/View.ts"}],"src/views/UserList.ts":[function(require,module,exports) {
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -400,345 +368,35 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.UserEdit = void 0;
+exports.UserList = void 0;
 
-var View_1 = require("./View");
-
-var UserForm_1 = require("./UserForm");
+var CollectionView_1 = require("./CollectionView");
 
 var UserShow_1 = require("./UserShow");
 
-var UserEdit = /*#__PURE__*/function (_View_1$View) {
-  _inherits(UserEdit, _View_1$View);
+var UserList = /*#__PURE__*/function (_CollectionView_1$Col) {
+  _inherits(UserList, _CollectionView_1$Col);
 
-  var _super = _createSuper(UserEdit);
+  var _super = _createSuper(UserList);
 
-  function UserEdit() {
-    _classCallCheck(this, UserEdit);
+  function UserList() {
+    _classCallCheck(this, UserList);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(UserEdit, [{
-    key: "regionsMap",
-    value: function regionsMap() {
-      return {
-        userShow: '.user-show',
-        userForm: '.user-form'
-      };
-    }
-  }, {
-    key: "onRender",
-    value: function onRender() {
-      // do our nesting
-      new UserShow_1.UserShow(this.regions.userShow, this.model).render();
-      new UserForm_1.UserForm(this.regions.userForm, this.model).render();
-    }
-  }, {
-    key: "template",
-    value: function template() {
-      return "\n            <div>\n                <div class='user-show'></div>\n                <div class='user-form'></div>\n            </div>\n        ";
+  _createClass(UserList, [{
+    key: "renderItem",
+    value: function renderItem(model, itemParent) {
+      new UserShow_1.UserShow(itemParent, model).render();
     }
   }]);
 
-  return UserEdit;
-}(View_1.View);
+  return UserList;
+}(CollectionView_1.CollectionView);
 
-exports.UserEdit = UserEdit;
-},{"./View":"src/views/View.ts","./UserForm":"src/views/UserForm.ts","./UserShow":"src/views/UserShow.ts"}],"src/models/Model.ts":[function(require,module,exports) {
-"use strict";
-
-var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
-  function adopt(value) {
-    return value instanceof P ? value : new P(function (resolve) {
-      resolve(value);
-    });
-  }
-
-  return new (P || (P = Promise))(function (resolve, reject) {
-    function fulfilled(value) {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function rejected(value) {
-      try {
-        step(generator["throw"](value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-    }
-
-    step((generator = generator.apply(thisArg, _arguments || [])).next());
-  });
-};
-
-var __generator = this && this.__generator || function (thisArg, body) {
-  var _ = {
-    label: 0,
-    sent: function sent() {
-      if (t[0] & 1) throw t[1];
-      return t[1];
-    },
-    trys: [],
-    ops: []
-  },
-      f,
-      y,
-      t,
-      g;
-  return g = {
-    next: verb(0),
-    "throw": verb(1),
-    "return": verb(2)
-  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-    return this;
-  }), g;
-
-  function verb(n) {
-    return function (v) {
-      return step([n, v]);
-    };
-  }
-
-  function step(op) {
-    if (f) throw new TypeError("Generator is already executing.");
-
-    while (_) {
-      try {
-        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-        if (y = 0, t) op = [op[0] & 2, t.value];
-
-        switch (op[0]) {
-          case 0:
-          case 1:
-            t = op;
-            break;
-
-          case 4:
-            _.label++;
-            return {
-              value: op[1],
-              done: false
-            };
-
-          case 5:
-            _.label++;
-            y = op[1];
-            op = [0];
-            continue;
-
-          case 7:
-            op = _.ops.pop();
-
-            _.trys.pop();
-
-            continue;
-
-          default:
-            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-              _ = 0;
-              continue;
-            }
-
-            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-              _.label = op[1];
-              break;
-            }
-
-            if (op[0] === 6 && _.label < t[1]) {
-              _.label = t[1];
-              t = op;
-              break;
-            }
-
-            if (t && _.label < t[2]) {
-              _.label = t[2];
-
-              _.ops.push(op);
-
-              break;
-            }
-
-            if (t[2]) _.ops.pop();
-
-            _.trys.pop();
-
-            continue;
-        }
-
-        op = body.call(thisArg, _);
-      } catch (e) {
-        op = [6, e];
-        y = 0;
-      } finally {
-        f = t = 0;
-      }
-    }
-
-    if (op[0] & 5) throw op[1];
-    return {
-      value: op[0] ? op[1] : void 0,
-      done: true
-    };
-  }
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Model = void 0;
-
-var Model =
-/** @class */
-function () {
-  function Model(attributes, events, sync) {
-    this.attributes = attributes;
-    this.events = events;
-    this.sync = sync;
-    this.on = this.events.on;
-    this.trigger = this.events.trigger;
-    this.get = this.attributes.get;
-  }
-
-  Model.prototype.set = function (update) {
-    this.attributes.set(update);
-    this.events.trigger('change');
-  };
-
-  Model.prototype.fetch = function () {
-    return __awaiter(this, void 0, Promise, function () {
-      var id, res, e_1;
-      return __generator(this, function (_a) {
-        switch (_a.label) {
-          case 0:
-            id = this.attributes.get('id');
-            if (typeof id !== 'number') throw new Error('Cant fetch without an id');
-            _a.label = 1;
-
-          case 1:
-            _a.trys.push([1, 3,, 4]);
-
-            return [4
-            /*yield*/
-            , this.sync.fetch(id)];
-
-          case 2:
-            res = _a.sent();
-            this.set(res.data);
-            return [3
-            /*break*/
-            , 4];
-
-          case 3:
-            e_1 = _a.sent();
-            throw new Error('Could not connect to json');
-
-          case 4:
-            return [2
-            /*return*/
-            ];
-        }
-      });
-    });
-  };
-
-  Model.prototype.save = function () {
-    return __awaiter(this, void 0, Promise, function () {
-      var res, e_2;
-      return __generator(this, function (_a) {
-        switch (_a.label) {
-          case 0:
-            _a.trys.push([0, 2,, 3]);
-
-            return [4
-            /*yield*/
-            , this.sync.save(this.attributes.getAll())];
-
-          case 1:
-            res = _a.sent();
-            this.trigger('save');
-            return [3
-            /*break*/
-            , 3];
-
-          case 2:
-            e_2 = _a.sent();
-            this.trigger('error');
-            return [3
-            /*break*/
-            , 3];
-
-          case 3:
-            return [2
-            /*return*/
-            ];
-        }
-      });
-    });
-  };
-
-  return Model;
-}();
-
-exports.Model = Model;
-},{}],"src/models/Attributes.ts":[function(require,module,exports) {
-"use strict";
-
-var __assign = this && this.__assign || function () {
-  __assign = Object.assign || function (t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-      s = arguments[i];
-
-      for (var p in s) {
-        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-      }
-    }
-
-    return t;
-  };
-
-  return __assign.apply(this, arguments);
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Attributes = void 0;
-
-var Attributes =
-/** @class */
-function () {
-  function Attributes(data) {
-    var _this = this;
-
-    this.data = data; // the type of K can only be one of the keys of T, and it will return the type that is located at T[K]
-
-    this.get = function (key) {
-      return _this.data[key];
-    };
-
-    this.set = function (update) {
-      _this.data = __assign(__assign({}, _this.data), update);
-    };
-  }
-
-  Attributes.prototype.getAll = function () {
-    return this.data;
-  };
-
-  return Attributes;
-}();
-
-exports.Attributes = Attributes;
-},{}],"node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
+exports.UserList = UserList;
+},{"./CollectionView":"src/views/CollectionView.ts","./UserShow":"src/views/UserShow.ts"}],"node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -5164,256 +4822,7 @@ module.exports.default = axios;
 
 },{"./utils":"node_modules/axios/lib/utils.js","./helpers/bind":"node_modules/axios/lib/helpers/bind.js","./core/Axios":"node_modules/axios/lib/core/Axios.js","./core/mergeConfig":"node_modules/axios/lib/core/mergeConfig.js","./defaults":"node_modules/axios/lib/defaults/index.js","./cancel/CanceledError":"node_modules/axios/lib/cancel/CanceledError.js","./cancel/CancelToken":"node_modules/axios/lib/cancel/CancelToken.js","./cancel/isCancel":"node_modules/axios/lib/cancel/isCancel.js","./env/data":"node_modules/axios/lib/env/data.js","./helpers/toFormData":"node_modules/axios/lib/helpers/toFormData.js","../lib/core/AxiosError":"node_modules/axios/lib/core/AxiosError.js","./helpers/spread":"node_modules/axios/lib/helpers/spread.js","./helpers/isAxiosError":"node_modules/axios/lib/helpers/isAxiosError.js"}],"node_modules/axios/index.js":[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/models/ApiSync.ts":[function(require,module,exports) {
-"use strict";
-
-var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
-  function adopt(value) {
-    return value instanceof P ? value : new P(function (resolve) {
-      resolve(value);
-    });
-  }
-
-  return new (P || (P = Promise))(function (resolve, reject) {
-    function fulfilled(value) {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function rejected(value) {
-      try {
-        step(generator["throw"](value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-    }
-
-    step((generator = generator.apply(thisArg, _arguments || [])).next());
-  });
-};
-
-var __generator = this && this.__generator || function (thisArg, body) {
-  var _ = {
-    label: 0,
-    sent: function sent() {
-      if (t[0] & 1) throw t[1];
-      return t[1];
-    },
-    trys: [],
-    ops: []
-  },
-      f,
-      y,
-      t,
-      g;
-  return g = {
-    next: verb(0),
-    "throw": verb(1),
-    "return": verb(2)
-  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-    return this;
-  }), g;
-
-  function verb(n) {
-    return function (v) {
-      return step([n, v]);
-    };
-  }
-
-  function step(op) {
-    if (f) throw new TypeError("Generator is already executing.");
-
-    while (_) {
-      try {
-        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-        if (y = 0, t) op = [op[0] & 2, t.value];
-
-        switch (op[0]) {
-          case 0:
-          case 1:
-            t = op;
-            break;
-
-          case 4:
-            _.label++;
-            return {
-              value: op[1],
-              done: false
-            };
-
-          case 5:
-            _.label++;
-            y = op[1];
-            op = [0];
-            continue;
-
-          case 7:
-            op = _.ops.pop();
-
-            _.trys.pop();
-
-            continue;
-
-          default:
-            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-              _ = 0;
-              continue;
-            }
-
-            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-              _.label = op[1];
-              break;
-            }
-
-            if (op[0] === 6 && _.label < t[1]) {
-              _.label = t[1];
-              t = op;
-              break;
-            }
-
-            if (t && _.label < t[2]) {
-              _.label = t[2];
-
-              _.ops.push(op);
-
-              break;
-            }
-
-            if (t[2]) _.ops.pop();
-
-            _.trys.pop();
-
-            continue;
-        }
-
-        op = body.call(thisArg, _);
-      } catch (e) {
-        op = [6, e];
-        y = 0;
-      } finally {
-        f = t = 0;
-      }
-    }
-
-    if (op[0] & 5) throw op[1];
-    return {
-      value: op[0] ? op[1] : void 0,
-      done: true
-    };
-  }
-};
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ApiSync = void 0;
-
-var axios_1 = __importDefault(require("axios"));
-
-var ApiSync =
-/** @class */
-function () {
-  function ApiSync(rootUrl) {
-    this.rootUrl = rootUrl;
-  }
-
-  ApiSync.prototype.fetch = function (id) {
-    return __awaiter(this, void 0, Promise, function () {
-      var e_1;
-      return __generator(this, function (_a) {
-        switch (_a.label) {
-          case 0:
-            _a.trys.push([0, 2,, 3]);
-
-            return [4
-            /*yield*/
-            , axios_1.default.get("".concat(this.rootUrl, "/").concat(id))];
-
-          case 1:
-            return [2
-            /*return*/
-            , _a.sent()];
-
-          case 2:
-            e_1 = _a.sent();
-            throw new Error('User not Found');
-
-          case 3:
-            return [2
-            /*return*/
-            ];
-        }
-      });
-    });
-  };
-
-  ApiSync.prototype.save = function (data) {
-    return __awaiter(this, void 0, Promise, function () {
-      var id, e_2;
-      return __generator(this, function (_a) {
-        switch (_a.label) {
-          case 0:
-            _a.trys.push([0, 5,, 6]);
-
-            id = data.id;
-            if (!id) return [3
-            /*break*/
-            , 2];
-            return [4
-            /*yield*/
-            , axios_1.default.put("".concat(this.rootUrl, "/").concat(id), data)];
-
-          case 1:
-            return [2
-            /*return*/
-            , _a.sent()];
-
-          case 2:
-            return [4
-            /*yield*/
-            , axios_1.default.post(this.rootUrl, data)];
-
-          case 3:
-            return [2
-            /*return*/
-            , _a.sent()];
-
-          case 4:
-            return [3
-            /*break*/
-            , 6];
-
-          case 5:
-            e_2 = _a.sent();
-            throw new Error('Connection Failed');
-
-          case 6:
-            return [2
-            /*return*/
-            ];
-        }
-      });
-    });
-  };
-
-  return ApiSync;
-}();
-
-exports.ApiSync = ApiSync;
-},{"axios":"node_modules/axios/index.js"}],"src/models/Eventing.ts":[function(require,module,exports) {
+},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/models/Eventing.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5679,7 +5088,549 @@ function () {
 }();
 
 exports.Collection = Collection;
-},{"axios":"node_modules/axios/index.js","./Eventing":"src/models/Eventing.ts"}],"src/models/User.ts":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","./Eventing":"src/models/Eventing.ts"}],"src/models/Model.ts":[function(require,module,exports) {
+"use strict";
+
+var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+var __generator = this && this.__generator || function (thisArg, body) {
+  var _ = {
+    label: 0,
+    sent: function sent() {
+      if (t[0] & 1) throw t[1];
+      return t[1];
+    },
+    trys: [],
+    ops: []
+  },
+      f,
+      y,
+      t,
+      g;
+  return g = {
+    next: verb(0),
+    "throw": verb(1),
+    "return": verb(2)
+  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+    return this;
+  }), g;
+
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+
+    while (_) {
+      try {
+        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+        if (y = 0, t) op = [op[0] & 2, t.value];
+
+        switch (op[0]) {
+          case 0:
+          case 1:
+            t = op;
+            break;
+
+          case 4:
+            _.label++;
+            return {
+              value: op[1],
+              done: false
+            };
+
+          case 5:
+            _.label++;
+            y = op[1];
+            op = [0];
+            continue;
+
+          case 7:
+            op = _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+
+          default:
+            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+              _ = 0;
+              continue;
+            }
+
+            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+              _.label = op[1];
+              break;
+            }
+
+            if (op[0] === 6 && _.label < t[1]) {
+              _.label = t[1];
+              t = op;
+              break;
+            }
+
+            if (t && _.label < t[2]) {
+              _.label = t[2];
+
+              _.ops.push(op);
+
+              break;
+            }
+
+            if (t[2]) _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+        }
+
+        op = body.call(thisArg, _);
+      } catch (e) {
+        op = [6, e];
+        y = 0;
+      } finally {
+        f = t = 0;
+      }
+    }
+
+    if (op[0] & 5) throw op[1];
+    return {
+      value: op[0] ? op[1] : void 0,
+      done: true
+    };
+  }
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Model = void 0;
+
+var Model =
+/** @class */
+function () {
+  function Model(attributes, events, sync) {
+    this.attributes = attributes;
+    this.events = events;
+    this.sync = sync;
+    this.on = this.events.on;
+    this.trigger = this.events.trigger;
+    this.get = this.attributes.get;
+  }
+
+  Model.prototype.set = function (update) {
+    this.attributes.set(update);
+    this.events.trigger('change');
+  };
+
+  Model.prototype.fetch = function () {
+    return __awaiter(this, void 0, Promise, function () {
+      var id, res, e_1;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            id = this.attributes.get('id');
+            if (typeof id !== 'number') throw new Error('Cant fetch without an id');
+            _a.label = 1;
+
+          case 1:
+            _a.trys.push([1, 3,, 4]);
+
+            return [4
+            /*yield*/
+            , this.sync.fetch(id)];
+
+          case 2:
+            res = _a.sent();
+            this.set(res.data);
+            return [3
+            /*break*/
+            , 4];
+
+          case 3:
+            e_1 = _a.sent();
+            throw new Error('Could not connect to json');
+
+          case 4:
+            return [2
+            /*return*/
+            ];
+        }
+      });
+    });
+  };
+
+  Model.prototype.save = function () {
+    return __awaiter(this, void 0, Promise, function () {
+      var res, e_2;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            _a.trys.push([0, 2,, 3]);
+
+            return [4
+            /*yield*/
+            , this.sync.save(this.attributes.getAll())];
+
+          case 1:
+            res = _a.sent();
+            this.trigger('save');
+            return [3
+            /*break*/
+            , 3];
+
+          case 2:
+            e_2 = _a.sent();
+            this.trigger('error');
+            return [3
+            /*break*/
+            , 3];
+
+          case 3:
+            return [2
+            /*return*/
+            ];
+        }
+      });
+    });
+  };
+
+  return Model;
+}();
+
+exports.Model = Model;
+},{}],"src/models/Attributes.ts":[function(require,module,exports) {
+"use strict";
+
+var __assign = this && this.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Attributes = void 0;
+
+var Attributes =
+/** @class */
+function () {
+  function Attributes(data) {
+    var _this = this;
+
+    this.data = data; // the type of K can only be one of the keys of T, and it will return the type that is located at T[K]
+
+    this.get = function (key) {
+      return _this.data[key];
+    };
+
+    this.set = function (update) {
+      _this.data = __assign(__assign({}, _this.data), update);
+    };
+  }
+
+  Attributes.prototype.getAll = function () {
+    return this.data;
+  };
+
+  return Attributes;
+}();
+
+exports.Attributes = Attributes;
+},{}],"src/models/ApiSync.ts":[function(require,module,exports) {
+"use strict";
+
+var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+var __generator = this && this.__generator || function (thisArg, body) {
+  var _ = {
+    label: 0,
+    sent: function sent() {
+      if (t[0] & 1) throw t[1];
+      return t[1];
+    },
+    trys: [],
+    ops: []
+  },
+      f,
+      y,
+      t,
+      g;
+  return g = {
+    next: verb(0),
+    "throw": verb(1),
+    "return": verb(2)
+  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+    return this;
+  }), g;
+
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+
+    while (_) {
+      try {
+        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+        if (y = 0, t) op = [op[0] & 2, t.value];
+
+        switch (op[0]) {
+          case 0:
+          case 1:
+            t = op;
+            break;
+
+          case 4:
+            _.label++;
+            return {
+              value: op[1],
+              done: false
+            };
+
+          case 5:
+            _.label++;
+            y = op[1];
+            op = [0];
+            continue;
+
+          case 7:
+            op = _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+
+          default:
+            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+              _ = 0;
+              continue;
+            }
+
+            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+              _.label = op[1];
+              break;
+            }
+
+            if (op[0] === 6 && _.label < t[1]) {
+              _.label = t[1];
+              t = op;
+              break;
+            }
+
+            if (t && _.label < t[2]) {
+              _.label = t[2];
+
+              _.ops.push(op);
+
+              break;
+            }
+
+            if (t[2]) _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+        }
+
+        op = body.call(thisArg, _);
+      } catch (e) {
+        op = [6, e];
+        y = 0;
+      } finally {
+        f = t = 0;
+      }
+    }
+
+    if (op[0] & 5) throw op[1];
+    return {
+      value: op[0] ? op[1] : void 0,
+      done: true
+    };
+  }
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ApiSync = void 0;
+
+var axios_1 = __importDefault(require("axios"));
+
+var ApiSync =
+/** @class */
+function () {
+  function ApiSync(rootUrl) {
+    this.rootUrl = rootUrl;
+  }
+
+  ApiSync.prototype.fetch = function (id) {
+    return __awaiter(this, void 0, Promise, function () {
+      var e_1;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            _a.trys.push([0, 2,, 3]);
+
+            return [4
+            /*yield*/
+            , axios_1.default.get("".concat(this.rootUrl, "/").concat(id))];
+
+          case 1:
+            return [2
+            /*return*/
+            , _a.sent()];
+
+          case 2:
+            e_1 = _a.sent();
+            throw new Error('User not Found');
+
+          case 3:
+            return [2
+            /*return*/
+            ];
+        }
+      });
+    });
+  };
+
+  ApiSync.prototype.save = function (data) {
+    return __awaiter(this, void 0, Promise, function () {
+      var id, e_2;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            _a.trys.push([0, 5,, 6]);
+
+            id = data.id;
+            if (!id) return [3
+            /*break*/
+            , 2];
+            return [4
+            /*yield*/
+            , axios_1.default.put("".concat(this.rootUrl, "/").concat(id), data)];
+
+          case 1:
+            return [2
+            /*return*/
+            , _a.sent()];
+
+          case 2:
+            return [4
+            /*yield*/
+            , axios_1.default.post(this.rootUrl, data)];
+
+          case 3:
+            return [2
+            /*return*/
+            , _a.sent()];
+
+          case 4:
+            return [3
+            /*break*/
+            , 6];
+
+          case 5:
+            e_2 = _a.sent();
+            throw new Error('Connection Failed');
+
+          case 6:
+            return [2
+            /*return*/
+            ];
+        }
+      });
+    });
+  };
+
+  return ApiSync;
+}();
+
+exports.ApiSync = ApiSync;
+},{"axios":"node_modules/axios/index.js"}],"src/models/User.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -5758,29 +5709,43 @@ function (_super) {
 
 exports.User = User;
 },{"./Model":"src/models/Model.ts","./Attributes":"src/models/Attributes.ts","./ApiSync":"src/models/ApiSync.ts","./Eventing":"src/models/Eventing.ts","./Collection":"src/models/Collection.ts"}],"src/index.ts":[function(require,module,exports) {
-"use strict";
+"use strict"; // import { UserEdit } from './views/UserEdit';
+// import { User } from './models/User';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
-});
+}); // const root = document.getElementById('root');
+// if (root) {
+//   const userEdit = new UserEdit(
+//     root,
+//     User.buildUser({ name: 'Celty', age: 5 })
+//   );
+//   userEdit.render();
+//   console.log(userEdit);
+// } else {
+//   throw new Error('Root Element Not found');
+// }
 
-var UserEdit_1 = require("./views/UserEdit");
+var UserList_1 = require("./views/UserList");
+
+var Collection_1 = require("./models/Collection");
 
 var User_1 = require("./models/User");
 
-var root = document.getElementById('root');
+var users = new Collection_1.Collection('http://localhost:3000/users', function (json) {
+  return User_1.User.buildUser(json);
+});
+users.on('change', function () {
+  var root = document.getElementById('root');
 
-if (root) {
-  var userEdit = new UserEdit_1.UserEdit(root, User_1.User.buildUser({
-    name: 'Celty',
-    age: 5
-  }));
-  userEdit.render();
-  console.log(userEdit);
-} else {
-  throw new Error('Root Element Not found');
-}
-},{"./views/UserEdit":"src/views/UserEdit.ts","./models/User":"src/models/User.ts"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+  if (root) {
+    new UserList_1.UserList(root, users).render();
+  } else {
+    throw new Error('No Root Found');
+  }
+});
+users.fetch();
+},{"./views/UserList":"src/views/UserList.ts","./models/Collection":"src/models/Collection.ts","./models/User":"src/models/User.ts"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -5808,7 +5773,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45225" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38875" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
